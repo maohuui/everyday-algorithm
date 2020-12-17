@@ -40,51 +40,93 @@ void swap(vector<int> &input, int i, int j)
 }
 
 //方法一：快速排序
-void quickSort(vector<int>& input, int left, int right)
+void quickSort(vector<int>& s, int l, int r)
 {
-    if(left >= right)
-        return;
-
-    int base = input[left];
-    int i = left;
-    int j = right;
-
-    cout << "----------------" << endl;
-    cout << " i: " << i << " j: " << j << endl;
-
-    while(i < j)
+    if (l < r)
     {
-        while(input[i] <= input[base] && i < j)
+        //Swap(s[l], s[(l + r) / 2]); //将中间的这个数和第一个数交换 参见注1
+        int i = l, j = r, x = s[l];
+        while (i < j)
         {
-            i++;
+            while(i < j && s[j] >= x) // 从右向左找第一个小于x的数
+                j--;  
+            if(i < j) 
+                s[i++] = s[j];
+            
+            while(i < j && s[i] < x) // 从左向右找第一个大于等于x的数
+                i++;  
+            if(i < j) 
+                s[j--] = s[i];
         }
-        //cout << " i: " << i << " j: " << j << endl;
+        s[i] = x;
+        quickSort(s, l, i - 1); // 递归调用 
+        quickSort(s, i + 1, r);
+    }
+    PrintVector(s);
+}
+int quickSort_findValue(vector<int>& s, int l, int r)
+{
+    if (l < r)
+    {
+        //Swap(s[l], s[(l + r) / 2]); //将中间的这个数和第一个数交换 参见注1
+        int i = l, j = r, x = s[l];
+        while (i < j)
+        {
+            while(i < j && s[j] >= x) // 从右向左找第一个小于x的数
+                j--;  
+            if(i < j) 
+                s[i++] = s[j];
+            
+            while(i < j && s[i] < x) // 从左向右找第一个大于等于x的数
+                i++;  
+            if(i < j) 
+                s[j--] = s[i];
+        }
+        s[i] = x; //交换基准
+        //quickSort(s, l, i - 1); // 递归调用 
+        //quickSort(s, i + 1, r);
+        return i;
+    }
+}
+/*
+O（n）的算法。思路是利用快排的思想，以最后一个元素为基准，将数组一分为二，左边小于基准，右边大于基准，完成一趟分割，
 
-        while(input[j] >= input[base] && i < j)
-        {
-            j--;
-        }
-        if(i < j)
-        {
-            int tmp = input[i];
-            input[i] = input[j];
-            input[j] = tmp;
-        }    
-        //swap(input, i, j);
+基准的下标为index，这时，包括基准在内，左边有index+1个最小元素，若index+1=k，显然符合题意，直接将这index+1个元素输出即可，若不等于：
+
+1.index>k-1，则前k个元素的右端点应该在基准的左边，所以更新查找范围的右端点，重新在左侧找；
+
+2.index<k-1，则前k个最小元素包括基准，且其右端点在基准的右边，所以更新查找范围的左端点，重新在右侧找。
+
+
+*/
+
+vector<int> test01(vector<int>& input, int k)
+{
+    vector<int>result;
+
+    if(input.empty() || k>input.size() || k < 0)
+    {
+        cout << " 非法输入 " << endl;
+        return result;
     }
 
-    input[left] = input[i];
-    input[i] = base;
-    PrintVector(input);
-    cout << "----------------" << endl;
+    int len = input.size();
+    int start = 0;
+    int end = len-1;
 
-    quickSort(input, left, i-1);
-    quickSort(input, i+1, right);
+    int index = quickSort_findValue(input, start, end);
 
-}
-void test01(vector<int>& input, int k)
-{
-    quickSort(input, 0, input.size()-1);
+    while(index != k-1)
+    {
+        if(index>k-1)
+            end = index-1;
+        else
+            start = index+1;
+        index = quickSort_findValue(input, start, end);
+    }
+    for(int i = 0; i<k;i++)
+        result.push_back(input[i]);
+    return result;
 }
 
 int main()
@@ -93,7 +135,7 @@ int main()
 
     //1. 生成随机数组
     vector<int> v;
-    GenerateRandomNum(v, 10, 100, 5);
+    GenerateRandomNum(v, 10, 100, 10);
     PrintVector(v);
 
     //2. 输入K
@@ -102,7 +144,8 @@ int main()
     cin >> k;
 
     //3.算法
-    test01(v, k);
+    vector<int> res = test01(v, k);
+    PrintVector(res);
 
     return 0;
 }
