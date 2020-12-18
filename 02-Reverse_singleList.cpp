@@ -85,13 +85,19 @@ void releaseNode(ListNode* pHead)
 //========================
 ListNode* ReverseList(ListNode* pHead)
 {
+    if(pHead ==  NULL)
+        return NULL;
     ListNode* pNew = pHead;
     ListNode* pLast = pHead->next;
     ListNode* tmp;
+    if(pLast == NULL)
+    {
+        return pHead;
+    }
 
     //pHead->next = NULL;
 
-    while(pNew != NULL)
+    while(pNew != NULL )
     {
         tmp = pLast->next;
         pLast->next = pNew;
@@ -135,7 +141,7 @@ int main()
 
     //1. 生成随机数组
     vector<int> v;
-    GenerateRandomNum(v, 10, 100, 10);
+    GenerateRandomNum(v, 10, 100, 1);
     PrintVector(v);
 
     test01(v);
