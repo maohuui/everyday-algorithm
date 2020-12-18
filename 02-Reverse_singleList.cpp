@@ -1,4 +1,8 @@
 #include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include <time.h>
+#include <algorithm>
 using namespace std;
 
 struct ListNode
@@ -37,6 +41,15 @@ void PrintList(ListNode* pHead)
     cout << endl;
 }
 
+void PrintVector(vector<int> input)
+{
+    for(vector<int>::iterator it = input.begin(); it!= input.end(); it++)
+    {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
 //创建list
 ListNode* createNode(vector<int> &input)
 {
@@ -48,7 +61,7 @@ ListNode* createNode(vector<int> &input)
     for(int i = 1; i< input.size(); i++)
     {
         ListNode* newNode = new ListNode(input[i]);
-        tmp->new = newNode;
+        tmp->next = newNode;
 
         tmp = tmp->next;
     }
@@ -72,17 +85,23 @@ void releaseNode(ListNode* pHead)
 //========================
 ListNode* ReverseList(ListNode* pHead)
 {
-    ListNode* pLast = pHead;
-    while(pHead != NULL)
+    ListNode* pNew = pHead;
+    ListNode* pLast = pHead->next;
+    ListNode* tmp;
+
+    //pHead->next = NULL;
+
+    while(pNew != NULL)
     {
-        ListNode* tmp = pHead->next;
+        tmp = pLast->next;
+        pLast->next = pNew;
+        pNew = pLast;
         if(tmp == NULL)
             break;
-        pHead->next->next = pHead;
-        pHead = pHead->next;
+        pLast = tmp;
     }
-    pLast->next = NULL;
-    return pHead;
+    pHead->next = NULL;
+    return pLast;
 }
 
 void test01(vector<int>& v)
@@ -90,11 +109,11 @@ void test01(vector<int>& v)
     ListNode* head = createNode(v);
     PrintList(head);
 
-    cout << "============== " << endl;
-    head = ReverseList(head);
-    PrintList(head);
+    cout << "======1======== " << endl;
+    ListNode* newHead = ReverseList(head);
+    PrintList(newHead);
 
-    releaseNode(head);
+    releaseNode(newHead);
 }
 
 //=======================
@@ -116,7 +135,7 @@ int main()
 
     //1. 生成随机数组
     vector<int> v;
-    GenerateRandomNum(v, 10, 100, 5);
+    GenerateRandomNum(v, 10, 100, 10);
     PrintVector(v);
 
     test01(v);
