@@ -6,6 +6,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
+#include <algorithm>
 using namespace std;
 
 //生成随机数: 生成 n个随机数放在 input 
@@ -181,7 +182,6 @@ public:
     }
 };
 
-
 vector<int> test02(vector<int>& input, int k)
 {
     vector<int>result;
@@ -194,6 +194,21 @@ vector<int> test02(vector<int>& input, int k)
     BigHeapSort bS(input);
     PrintVector(input);
 
+    result.assign(input.begin(), input.begin()+k);
+    return result;
+}
+
+//=====================================对数器
+vector<int> test03(vector<int>& input, int k)
+{
+    vector<int>result;
+
+    if(input.empty() || k>input.size() || k < 0)
+    {
+        cout << " 非法输入 " << endl;
+        return result;
+    }
+    sort(input.begin(), input.end());
     result.assign(input.begin(), input.begin()+k);
     return result;
 }
@@ -213,8 +228,28 @@ int main()
     cin >> k;
 
     //3.算法
+
     vector<int> res = test02(v, k);
     PrintVector(res);
+
+    vector<int> res_abs = test03(v, k);
+    PrintVector(res_abs);
+
+    int len1 = res.size();
+    int len2 = res_abs.size();
+    if(len1 != k || len2 != k || len1 != len2)
+    {
+        cout << " error " << endl;
+        return -1;
+    }
+    for(int i = 0; i<len2; i++)
+    {
+        if(res[i] != res_abs[i])
+        {
+            cout << " error in " << i << endl;
+            break;
+        }
+    }
 
     return 0;
 }
