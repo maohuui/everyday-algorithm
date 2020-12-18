@@ -39,7 +39,7 @@ void swap(vector<int> &input, int i, int j)
     input[j] = tmp;
 }
 
-//方法一：快速排序
+//=====================================方法一：快速排序
 void quickSort(vector<int>& s, int l, int r)
 {
     if (l < r)
@@ -96,10 +96,7 @@ O（n）的算法。思路是利用快排的思想，以最后一个元素为基
 1.index>k-1，则前k个元素的右端点应该在基准的左边，所以更新查找范围的右端点，重新在左侧找；
 
 2.index<k-1，则前k个最小元素包括基准，且其右端点在基准的右边，所以更新查找范围的左端点，重新在右侧找。
-
-
 */
-
 vector<int> test01(vector<int>& input, int k)
 {
     vector<int>result;
@@ -129,13 +126,85 @@ vector<int> test01(vector<int>& input, int k)
     return result;
 }
 
+//=====================================方法二：堆
+/* https://www.cnblogs.com/chengxiao/p/6129630.html
+    采用大堆
+大顶堆：arr[i] >= arr[2i+1] && arr[i] >= arr[2i+2]  
+小顶堆：arr[i] <= arr[2i+1] && arr[i] <= arr[2i+2] 
+
+1. 构建堆：将给定无序序列构造成一个大堆（一般升序采用大堆，降序采用小堆)。
+          此时从最后一个非叶子结点开始（叶结点自然不用调整，第一个非叶子结点 arr.length/2-1=5/2-1=1），从左至右，从下至上进行调整。
+          找到第二个非叶节点，进行调整
+
+
+2. 调整堆 将堆顶元素与末尾元素进行交换，使末尾元素最大。然后继续调整堆，再将堆顶元素与末尾元素交换，得到第二大元素。如此反复进行交换、重建、交换。
+
+总结：
+　　a.将无需序列构建成一个堆，根据升序降序需求选择大顶堆或小顶堆;
+
+　　b.将堆顶元素与末尾元素交换，将最大元素"沉"到数组末端;
+
+　　c.重新调整结构，使其满足堆定义，然后继续交换堆顶元素与当前末尾元素，反复执行调整+交换步骤，直到整个序列有序。
+
+*/
+class BigHeapSort
+{
+public:
+    BigHeapSort(vector<int>& arr)
+    {
+        int len = arr.size();
+        //最后一个非叶子节点len/2-1
+        for(int i = len/2-1; i >= 0; i--)
+        {
+            adjustHeap(arr, i, len);
+        }
+        for(int j = len-1; j > 0;j--)
+        {
+            swap(arr,0, j);
+            adjustHeap(arr, 0, j);
+        }
+    }
+   void adjustHeap(vector<int>& arr,int i,int length){
+        int temp = arr[i];//先取出当前元素i
+        for(int k=i*2+1;k<length;k=k*2+1){//从i结点的左子结点开始，也就是2i+1处开始
+            if(k+1<length && arr[k]<arr[k+1]){//如果左子结点小于右子结点，k指向右子结点
+                k++;
+            }
+            if(arr[k] >temp){//如果子节点大于父节点，将子节点值赋给父节点（不用进行交换）
+                arr[i] = arr[k];
+                i = k;
+            }else{
+                break;
+            }
+        }
+        arr[i] = temp;//将temp值放到最终的位置
+    }
+};
+
+
+vector<int> test02(vector<int>& input, int k)
+{
+    vector<int>result;
+
+    if(input.empty() || k>input.size() || k < 0)
+    {
+        cout << " 非法输入 " << endl;
+        return result;
+    }
+    BigHeapSort bS(input);
+    PrintVector(input);
+
+    result.assign(input.begin(), input.begin()+k);
+    return result;
+}
+
 int main()
 {
     srand((unsigned int)time(NULL));
 
     //1. 生成随机数组
     vector<int> v;
-    GenerateRandomNum(v, 10, 100, 10);
+    GenerateRandomNum(v, 10, 100, 5);
     PrintVector(v);
 
     //2. 输入K
@@ -144,7 +213,7 @@ int main()
     cin >> k;
 
     //3.算法
-    vector<int> res = test01(v, k);
+    vector<int> res = test02(v, k);
     PrintVector(res);
 
     return 0;
