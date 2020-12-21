@@ -82,7 +82,7 @@ void releaseNode(ListNode* pHead)
     pHead = NULL;
 }
 
-//========================
+//======================== 方法一：暴力法
 ListNode* ReverseList(ListNode* pHead)
 {
     ListNode* pNew = pHead;
@@ -116,13 +116,11 @@ void test01(vector<int>& v)
     releaseNode(newHead);
 }
 
-//======================= reverse
-void test02(vector<int>& v)
+//=======================方法二： reverse
+ListNode* ReverseList02(ListNode* pHead)
 {
-    ListNode* pNode = createNode(v);
     vector<int> cV ;
-    ListNode* pTmp = pNode;
-
+    ListNode* pTmp = pHead;
     while(pTmp != NULL)
     {
         int tmp = pTmp->value;
@@ -135,6 +133,12 @@ void test02(vector<int>& v)
     PrintVector(cV);
 
     ListNode* pNew = createNode(cV);
+    return pNew;
+}
+void test02(vector<int>& v)
+{
+    ListNode* pNode = createNode(v);
+    ListNode* pNew  = ReverseList02(pNode);
 
     cout << "-------------------\n" << endl;
     PrintList(pNew);
