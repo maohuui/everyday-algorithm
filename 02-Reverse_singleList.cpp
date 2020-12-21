@@ -116,12 +116,33 @@ void test01(vector<int>& v)
     releaseNode(newHead);
 }
 
-//=======================
-
-void test02()
+//======================= reverse
+void test02(vector<int>& v)
 {
+    ListNode* pNode = createNode(v);
+    vector<int> cV ;
+    ListNode* pTmp = pNode;
 
+    while(pTmp != NULL)
+    {
+        int tmp = pTmp->value;
+        cV.push_back(tmp);
+        pTmp = pTmp->next;
+    }
+
+    reverse(cV.begin(), cV.end());
+    cout << "-------------------\n" << endl;
+    PrintVector(cV);
+
+    ListNode* pNew = createNode(cV);
+
+    cout << "-------------------\n" << endl;
+    PrintList(pNew);
+
+    releaseNode(pNode);
+    releaseNode(pNew);
 }
+
 //=====================
 
 void test03()
