@@ -106,16 +106,35 @@ void test01(vector<int> &input)
     //releaseNode(pHead);
 }
 
-//
+//======================= 穷举法
 bool hasCycle02(ListNode *head) 
 {
-    
+    if(head == NULL || head->next == NULL)
+        return false;
+
+    ListNode* k = head;
+    ListNode* q = head->next;
+    int count = 0;
+    while(q != NULL)
+    {
+        for(int i = 0; i<count; i++)
+        {
+            k = k->next;
+            if(k == q)
+                return true;
+        }
+        k = head;
+        q = q->next;
+        count++;
+    }
+    return false;
 }
 void test02(vector<int> &input)
 {
+    ListNode* pHead = createNode(input, false, 1);
 
+    cout << "是否有环： " << hasCycle02(pHead) << endl;
 }
-
 //
 bool hasCycle03(ListNode *head) 
 {
