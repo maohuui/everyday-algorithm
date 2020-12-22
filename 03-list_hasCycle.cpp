@@ -79,6 +79,54 @@ void PrintVector(vector<int> input)
     cout << endl;
 }
 
+//======================= 快慢指针
+bool hasCycle01(ListNode *head) 
+{
+    if(head == NULL || head->next == NULL || head->next->next == NULL)
+        return false;
+    ListNode* slow = head;
+    ListNode* fast = head->next->next;
+    while(fast != NULL)
+    {
+        if(slow == fast)
+            return true;
+        slow = slow->next;
+        if(fast->next == NULL || fast->next->next == NULL )
+            break;
+        fast = fast->next->next;
+    }
+    return false;
+}
+void test01(vector<int> &input)
+{
+    ListNode* pHead = createNode(input, true, 3);
+
+    cout << "是否有环： " << hasCycle01(pHead) << endl;
+
+    //releaseNode(pHead);
+}
+
+//
+bool hasCycle02(ListNode *head) 
+{
+    
+}
+void test02(vector<int> &input)
+{
+
+}
+
+//
+bool hasCycle03(ListNode *head) 
+{
+    
+}
+void test03(vector<int> &input)
+{
+
+}
+
+
 int main()
 {
     srand((unsigned int)time(NULL));
@@ -88,6 +136,7 @@ int main()
     GenerateRandomNum(v, 10, 100, 10);
     PrintVector(v);
 
+    test01(v);
 
     return 0;
 }
