@@ -135,16 +135,28 @@ void test02(vector<int> &input)
 
     cout << "是否有环： " << hasCycle02(pHead) << endl;
 }
-//
+//======================= set
 bool hasCycle03(ListNode *head) 
 {
-    
+    set<ListNode*>s;
+    ListNode* q = head;
+    while(q)
+    {
+        std::pair<set<ListNode*>::iterator, bool> ret = s.insert(q);
+        if(ret.second == false)
+        {
+            return true;
+        }
+        q = q->next;
+    }
+    return false;
 }
 void test03(vector<int> &input)
 {
+    ListNode* pHead = createNode(input, true, 3);
 
+    cout << "是否有环： " << hasCycle03(pHead) << endl;
 }
-
 
 int main()
 {
