@@ -82,16 +82,22 @@ void releaseNode(ListNode* pHead)
     pHead = NULL;
 }
 
-//======================== 方法一：暴力法
-ListNode* ReverseList(ListNode* pHead)
+//========================
+ListNode* ReverseList01(ListNode* pHead)
 {
+    if(pHead ==  NULL)
+        return NULL;
     ListNode* pNew = pHead;
     ListNode* pLast = pHead->next;
     ListNode* tmp;
+    if(pLast == NULL)
+    {
+        return pHead;
+    }
 
     //pHead->next = NULL;
 
-    while(pNew != NULL)
+    while(pNew != NULL )
     {
         tmp = pLast->next;
         pLast->next = pNew;
@@ -110,13 +116,13 @@ void test01(vector<int>& v)
     PrintList(head);
 
     cout << "======1======== " << endl;
-    ListNode* newHead = ReverseList(head);
+    ListNode* newHead = ReverseList01(head);
     PrintList(newHead);
 
     releaseNode(newHead);
 }
 
-//=======================方法二： reverse
+//======================= reverse
 ListNode* ReverseList02(ListNode* pHead)
 {
     vector<int> cV ;
@@ -146,12 +152,43 @@ void test02(vector<int>& v)
     releaseNode(pNode);
     releaseNode(pNew);
 }
-
-//=====================
-
-void test03()
+//=====================边遍历边反转
+ListNode* ReverseList03(ListNode* pHead)
 {
+    ListNode* tmp = pHead->next;
+    if(tmp == NULL)
+    {
+        cout << " one node " << endl;
+        return pHead;
+    }
 
+    ListNode* newNode = NULL;
+
+    while( pHead != NULL)
+    {
+        pHead->next = newNode;
+        newNode = pHead;
+        if(tmp == NULL)
+            break;
+        pHead = tmp;
+        tmp = tmp->next;
+    }
+    return pHead;
+}
+
+void test03(vector<int>& v)
+{
+    if(v.size() == 0)
+    {
+        cout << " No node " << endl;
+    }
+    ListNode* pNode = createNode(v);
+    ListNode* pNew  = ReverseList03(pNode);
+
+    cout << "-------------------\n" << endl;
+    PrintList(pNew);
+
+    releaseNode(pNew);
 }
 
 int main()
@@ -163,8 +200,7 @@ int main()
     GenerateRandomNum(v, 10, 100, 10);
     PrintVector(v);
 
-    test01(v);
-
+    test03(v);
 
     return 0;
 }
