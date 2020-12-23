@@ -63,17 +63,80 @@ void releaseNode(ListNode* pHead)
     pHead = NULL;
 }
 //=========================================
+//合并两个有序数组
+void mergeTwoArray(vector<int>& v1, vector<int>& v2)
+{
+    int size1 = v1.size();
+    int size2 = v2.size();
+
+    int min_size = min(size1, size2);
+
+    for(int i =0; i<min_size; i++)
+    {
+        
+    }
+
+}
+ListNode* mergeTwoLists01(ListNode* l1, ListNode* l2) 
+{
+
+    
+}
+
 void test01(vector<int>& v1, vector<int>& v2)
 {
     ListNode* l1 = createNode(v1);
     ListNode* l2 = createNode(v2);
 
+    ListNode* newNode = mergeTwoLists01(l1, l2);
+    PrintList(newNode);
 
     releaseNode(l1);
     releaseNode(l2);
 }
 
 //==============================
+ListNode* mergeTwoLists02(ListNode* l1, ListNode* l2) 
+{
+    ListNode* tmp1 = l1;
+    ListNode* tmp2 = l2;
+
+    ListNode* newNode = NULL;
+    if(tmp1 == NULL)
+        return tmp2;
+    if(tmp2 == NULL)
+        return tmp1;
+    
+    /*
+    if(tmp1->value < tmp2->value)
+        newNode = tmp1;
+    else
+        newNode = tmp2;
+    */
+
+    while (tmp1 != NULL && tmp2 != NULL)
+    {
+        
+        while (tmp1->value > tmp2->value)
+        {
+            /* code */
+        }
+        
+    }
+    
+}
+
+void test02(vector<int>& v1, vector<int>& v2)
+{
+    ListNode* l1 = createNode(v1);
+    ListNode* l2 = createNode(v2);
+
+    ListNode* newNode = mergeTwoLists01(l1, l2);
+    PrintList(newNode);
+
+    releaseNode(l1);
+    releaseNode(l2);
+}
 
 int main()
 {
