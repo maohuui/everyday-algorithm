@@ -112,56 +112,55 @@ void mergeTwoArray(vector<int>& v1, vector<int>& v2)
     }
     cout << endl;
 }
+//
 ListNode* mergeTwoLists01(ListNode* l1, ListNode* l2) 
 {
-
+    if(l1 == NULL)
+        return l2;
+    if(l2 == NULL)
+        return l1;
     
-}
-
-void test01(vector<int>& v1, vector<int>& v2)
-{
-    ListNode* l1 = createNode(v1);
-    ListNode* l2 = createNode(v2);
-
-    ListNode* newNode = mergeTwoLists01(l1, l2);
-    PrintList(newNode);
-
-    releaseNode(l1);
-    releaseNode(l2);
-}
-
-//==============================
-ListNode* mergeTwoLists02(ListNode* l1, ListNode* l2) 
-{
+    ListNode* newNode = new ListNode(0);
+    ListNode* tmpNode = newNode;
     ListNode* tmp1 = l1;
     ListNode* tmp2 = l2;
 
-    ListNode* newNode = NULL;
-    if(tmp1 == NULL)
-        return tmp2;
-    if(tmp2 == NULL)
-        return tmp1;
-    
-    /*
-    if(tmp1->value < tmp2->value)
-        newNode = tmp1;
-    else
-        newNode = tmp2;
-    */
+    cout << " -----------------1----------------- "  << endl;
 
-    while (tmp1 != NULL && tmp2 != NULL)
+    while(tmp1 != NULL && tmp2 != NULL)
     {
-        
-        while (tmp1->value > tmp2->value)
+        while(tmp1 != NULL && tmp2 != NULL && tmp1->value <= tmp2->value)
         {
-            /* code */
+            tmpNode->next = tmp1;
+            tmp1 = tmp1->next;
+            tmpNode = tmpNode->next;
         }
-        
+        while(tmp1 != NULL && tmp2 != NULL && tmp2->value <= tmp1->value)
+        {
+            tmpNode->next = tmp2;
+            tmp2 = tmp2->next;
+            tmpNode = tmpNode->next;
+        }
     }
-    
+    while(tmp1 != NULL)
+    {
+        tmpNode->next = tmp1;
+        tmp1 = tmp1->next;
+        tmpNode = tmpNode->next;
+    }
+    while(tmp2 != NULL)
+    {
+        tmpNode->next = tmp2;
+        tmp2 = tmp2->next;
+        tmpNode = tmpNode->next;
+    }
+
+    ListNode* retNode = newNode->next;
+    delete newNode;
+    return retNode;
 }
 
-void test02(vector<int>& v1, vector<int>& v2)
+void test01(vector<int>& v1, vector<int>& v2)
 {
     ListNode* l1 = createNode(v1);
     ListNode* l2 = createNode(v2);
@@ -181,7 +180,7 @@ int main()
     vector<int> v1 = {1, 4, 6, 7, 7, 9};
     vector<int> v2 = {2, 3, 6, 8, 9, 10, 25};
 
-    mergeTwoArray(v1, v2);
+    test01(v1, v2);
 
     return 0;
 }
