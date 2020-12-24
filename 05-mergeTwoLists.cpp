@@ -70,12 +70,47 @@ void mergeTwoArray(vector<int>& v1, vector<int>& v2)
     int size2 = v2.size();
 
     int min_size = min(size1, size2);
+    
+    int i = 0;
+    int j = 0;
+    vector<int> result;
+    cout << " ----min_size--- " << min_size << endl;
 
-    for(int i =0; i<min_size; i++)
+    while(i < min_size && j < min_size)
     {
-        
+        cout <<  i << ";" << j << endl;
+        while(v1[i] <= v2[j] && i < min_size)
+        {
+            result.push_back(v1[i]);
+            i++;
+        }
+        cout <<  i << ";" << j << endl;
+        while (v2[j] <= v1[i] && j < min_size)
+        {
+            result.push_back(v2[j]);
+            j++;
+        }
+        cout <<  i << ";" << j << endl;
     }
+    cout << " ----min_size--- " << min_size << endl;
+    cout <<  i << ";" << j << endl;
 
+    while(i<size1)
+    {
+        result.push_back(v1[i]);
+        i++;
+    }
+    cout <<  i << ";" << j << endl;
+    while(j<size2)
+    {
+        result.push_back(v2[j]);
+        j++;
+    }
+    for(int k=0; k<result.size(); k++)
+    {
+        cout << result[k] << " " ;
+    }
+    cout << endl;
 }
 ListNode* mergeTwoLists01(ListNode* l1, ListNode* l2) 
 {
@@ -143,8 +178,10 @@ int main()
     srand((unsigned int)time(NULL));
 
     //1. 生成随机数组
-    vector<int> v1 = {1, 4, 6};
-    vector<int> v2 = {2, 3, 6};
+    vector<int> v1 = {1, 4, 6, 7, 7, 9};
+    vector<int> v2 = {2, 3, 6, 8, 9, 10, 25};
+
+    mergeTwoArray(v1, v2);
 
     return 0;
 }
