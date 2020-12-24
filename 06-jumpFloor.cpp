@@ -21,6 +21,27 @@ void test01(int n)
     cout << " jumps way: " << jumpFloor01(n) << endl;
 }
 
+//======================迭代
+int jumpFloor02(int number) 
+{
+    if(number == 1)
+        return 1;
+    if(number == 2)
+        return 2;
+    int fn1 = 2;
+    int fn2 = 1;
+    while(number-- >2)
+    {
+        fn1 += fn2;
+        fn2 = fn1 - fn2;
+    }
+    return fn1;
+}
+void test02(int n)
+{
+    cout << " jumps way: " << jumpFloor02(n) << endl;
+}
+
 int main()
 {
     int n;
@@ -28,4 +49,5 @@ int main()
     cin >> n;
 
     test01(n);
+    test02(n);
 }
