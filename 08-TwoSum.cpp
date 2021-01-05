@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <algorithm>
+#include <unordered_map>
+
 using namespace std;
 
 //生成随机数: 生成 n个随机数放在 input 
@@ -68,8 +70,25 @@ void test01(vector<int>& numbers, int target)
 }
 
 //======================方法2
-vector<int> twoSum02(vector<int>& numbers, int target) {
-    // write code here
+vector<int> twoSum02(vector<int>& numbers, int target)
+{
+    unordered_map<int, int> m;
+    vector<int> res ={0, 0};
+
+    for(int i =0; i<numbers.size(); i++)
+    {
+        int t = target - numbers[i];
+        if(m.count(t) != 0)
+        {
+            res[0] = m[t]+1;
+            res[1] = i+1;
+            return res;
+        }
+        else {
+            m[numbers[i]] = i;
+        }
+    }
+    return res;
 }
 
 void test02(vector<int>& numbers, int target)
@@ -83,20 +102,24 @@ int main()
     srand((unsigned int)time(NULL));
 
     //1. 生成随机数组
-    vector<int> v = {-3,4,3,90};
-
-    //GenerateRandomNum(v, 1, 10, 3);
-    PrintVector(v);
-
-    //2. 输入target
+    vector<int> v;
     int target;
-    target = 0;
-    //cout << " 请输入target：";
-    //cin >> target;
 
-    test01(v, target);
-    //test02(v, target);
+    for(int i =0; i< 10; i++)
+    {
+        v.clear();
+        //1.生成随机数
+        GenerateRandomNum(v, 1, 10, 3);
+        PrintVector(v);
 
+        //2. 输入target
+        cout << " 请输入target：";
+        cin >> target;
+
+        test01(v, target);
+        test02(v, target);
+
+    }
 
     return 0;
 }
